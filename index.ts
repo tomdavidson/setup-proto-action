@@ -4,19 +4,19 @@ import execa from 'execa';
 import * as cache from '@actions/cache';
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
-import { getHomeDir, getMoonDir, getToolchainCacheKey, getToolsDir } from './helpers';
+import { getHomeDir, getProtoDir, getToolchainCacheKey, getToolsDir } from './helpers';
 
 const WINDOWS = process.platform === 'win32';
 
 // eslint-disable-next-line complexity
-async function installMoon() {
-	core.info('Installing `moon` globally');
+async function installProto() {
+	core.info('Installing `proto` globally');
 
 	const version = core.getInput('version') || 'latest';
 	const isV1 = version === 'latest' || !version.startsWith('0');
 
-	const binName = WINDOWS ? 'moon.exe' : 'moon';
-	const binDir = isV1 ? path.join(getMoonDir(), 'bin') : path.join(getToolsDir(), 'moon', version);
+	const binName = WINDOWS ? 'proto.exe' : 'proto';
+	const binDir = isV1 ? path.join(getProtoDir(), 'bin') : path.join(getToolsDir(), 'proto', version);
 	const binPath = path.join(binDir, binName);
 
 	if (version !== 'latest' && fs.existsSync(binPath)) {
@@ -29,7 +29,7 @@ async function installMoon() {
 	const scriptName = WINDOWS ? 'install.ps1' : 'install.sh';
 	const script = await tc.downloadTool(
 		isV1
-			? `https://moonrepo.dev/install/${WINDOWS ? 'moon.ps1' : 'moon.sh'}`
+			? `https://moonrepo.dev/install/${WINDOWS ? 'proto.ps1' : 'proto.sh'}`
 			: `https://moonrepo.dev/${scriptName}`,
 		path.join(getHomeDir(), 'temp', scriptName),
 	);
@@ -44,7 +44,7 @@ async function installMoon() {
 
 	// Make it available without exe extension
 	if (WINDOWS) {
-		await fs.promises.copyFile(binPath, path.join(binDir, 'moon'));
+		await fs.promises.copyFile(binPath, path.join(binDir, 'proto'));
 	}
 
 	core.info(`Installed binary to ${binPath}`);
@@ -65,7 +65,7 @@ async function restoreCache() {
 	const cacheKey = await cache.restoreCache(
 		[getToolsDir()],
 		primaryKey,
-		[`moon-toolchain-${process.platform}`, 'moon-toolchain'],
+		[`proto-toolchain-${process.platform}`, 'proto-toolchain'],
 		{},
 		false,
 	);
@@ -84,7 +84,7 @@ async function restoreCache() {
 async function run() {
 	try {
 		await restoreCache();
-		await installMoon();
+		await installProto();
 	} catch (error: unknown) {
 		core.setFailed((error as Error).message);
 	}

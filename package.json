@@ -1,7 +1,7 @@
 {
-  "name": "@moonrepo/setup-moon-action",
-  "version": "1.1.1",
-  "description": "A GitHub action for installing moon globally and caching the toolchain.",
+  "name": "@moonrepo/setup-proto-action",
+  "version": "1.0.0",
+  "description": "A GitHub action for installing proto globally and caching the toolchain.",
   "main": "dist/index.js",
   "scripts": {
     "build": "ncc build ./index.ts && ncc build ./post.ts --out ./dist/post",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/moonrepo/setup-moon-action"
+    "url": "https://github.com/moonrepo/setup-proto-action"
   },
   "author": "Miles Johnson",
   "license": "MIT",

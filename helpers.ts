@@ -3,8 +3,8 @@ import os from 'node:os';
 import path from 'node:path';
 import * as glob from '@actions/glob';
 
-export function getMoonDir() {
-	return path.join(os.homedir(), '.moon');
+export function getProtoDir() {
+	return path.join(os.homedir(), '.proto');
 }
 
 export function getHomeDir() {
@@ -14,7 +14,7 @@ export function getHomeDir() {
 		return proto;
 	}
 
-	return getMoonDir();
+	return getProtoDir();
 }
 
 export function getToolsDir() {
@@ -22,7 +22,7 @@ export function getToolsDir() {
 }
 
 export async function getToolchainCacheKey() {
-	const toolchainHash = await glob.hashFiles('.moon/toolchain.yml');
+	const toolchainHash = await glob.hashFiles('.prototools');
 
 	return `moon-toolchain-${process.platform}-${toolchainHash}`;
 }
